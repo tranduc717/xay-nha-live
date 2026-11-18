@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bảng điều khiển – Chủ Thầu Tí Hon</title>
+<style>
+:root { --bg: #0f0b1e; --panel: #1a1430; --panel2: #231a40; --line: #3a2d66; --pri: #a855f7; --pri2: #ec4899; --ok: #22c55e; --warn: #f59e0b; --bad: #ef4444; --tx: #ece9f7; --mut: #9a92b8; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Roboto, Arial, sans-serif; background: radial-gradient(1200px 600px at 20% -10%, #2a1655, var(--bg)); color: var(--tx); min-height: 100vh; font-size: 15px; }
+.wrap { display: grid; grid-template-columns: 230px 1fr 400px; gap: 16px; padding: 16px; max-width: 1600px; margin: 0 auto; }
+aside { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px 12px; height: calc(100vh - 32px); position: sticky; top: 16px; display: flex; flex-direction: column; }
+.brand { text-align: center; padding: 6px 0 18px; }
+.brand .crown { font-size: 34px; }
+.brand b { display: block; font-size: 19px; letter-spacing: .5px; background: linear-gradient(90deg, #fbbf24, #f472b6); -webkit-background-clip: text; color: transparent; }
+.brand small { color: var(--mut); font-size: 12px; }
+nav button { display: flex; gap: 10px; align-items: center; width: 100%; background: none; border: 0; color: var(--tx); padding: 11px 12px; border-radius: 12px; cursor: pointer; font-size: 15px; text-align: left; margin-bottom: 4px; }
+nav button:hover { background: var(--panel2); }
+nav button.on { background: linear-gradient(90deg, var(--pri), #7c3aed); font-weight: 700; }
+.sys { margin-top: auto; font-size: 12px; color: var(--ok); text-align: center; }
+main { min-width: 0; }
+.top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.top h1 { font-size: 22px; }
+.pill { background: var(--panel2); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; font-size: 13px; }
+section { display: none; }
+section.on { display: block; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+.card h2 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: center; }
+.stat .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: var(--panel2); }
+.stat small { color: var(--mut); display: block; font-size: 12px; }
+.stat b { font-size: 20px; }
+.stat.live .ic { background: rgba(34,197,94,.15); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+input, select, textarea { background: #120d24; border: 1px solid var(--line); color: var(--tx); border-radius: 10px; padding: 10px 12px; font-size: 15px; width: 100%; }
+label { display: block; color: var(--mut); font-size: 13px; margin: 8px 0 4px; }
+.btn { background: var(--panel2); border: 1px solid var(--line); color: var(--tx); padding: 10px 16px; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.btn:hover { border-color: var(--pri); }
+.btn.pri { background: linear-gradient(90deg, var(--pri), #6d28d9); border: 0; }
+.btn.pink { background: linear-gradient(90deg, var(--pri2), #be185d); border: 0; }
+.btn.ok { background: #15803d; border: 0; }
+.btn.bad { background: #b91c1c; border: 0; }
+.prog { height: 12px; background: #120d24; border-radius: 6px; overflow: hidden; margin: 8px 0; }
+.prog i { display: block; height: 100%; background: linear-gradient(90deg, var(--pri), var(--pri2)); width: 0; transition: width .4s; }
+.segs { display: flex; gap: 3px; }
+.segs b { flex: 1; height: 8px; border-radius: 4px; background: #2c2350; }
+.segs b.done { background: var(--ok); }
+.segs b.cur { background: var(--warn); }
+table { width: 100%; border-collapse: collapse; }
+td, th { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+th { color: var(--mut); font-weight: 600; font-size: 12px; }
+.tag { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--panel2); }
+.tag.run { background: rgba(34,197,94,.2); color: #86efac; }
+.list div { padding: 6px 0; border-bottom: 1px dashed var(--line); display: flex; justify-content: space-between; gap: 8px; }
+.mut { color: var(--mut); }
+.err { color: #fca5a5; font-size: 13px; margin-top: 8px; }
+.right .card { position: sticky; }
+.obs { display: flex; gap: 8px; }
+.obs input { font-family: monospace; color: #c4b5fd; }
+.preview { aspect-ratio: 9 / 16; background: #000; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--line); }
+.preview iframe { width: 1080px; height: 1920px; border: 0; transform-origin: 0 0; position: absolute; left: 0; top: 0; }
+.preview .off { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--mut); padding: 20px; }
+.feat li { list-style: none; padding: 5px 0; }
+.feat li::before { content: '✅ '; }
+.switch { position: relative; width: 46px; height: 26px; display: inline-block; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch span { position: absolute; inset: 0; background: #3a2d66; border-radius: 26px; cursor: pointer; transition: .2s; }
+.switch span::before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+.switch input:checked + span { background: var(--ok); }
+.switch input:checked + span::before { transform: translateX(20px); }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1f2937; border: 1px solid var(--pri); padding: 10px 18px; border-radius: 12px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 9; }
+.toast.on { opacity: 1; }
+.feed div { padding: 4px 0; font-size: 14px; border-bottom: 1px dashed var(--line); }
+@media (max-width: 1200px) { .wrap { grid-template-columns: 200px minmax(0, 1fr); } .right { grid-column: 1 / -1; } }
+@media (max-width: 760px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); padding: 10px; gap: 10px; }
+  .wrap > *, main, .right { min-width: 0; width: 100%; }
+  .brand { display: flex; align-items: center; gap: 10px; text-align: left; }
+  .brand .crown { font-size: 26px; }
+  .brand small { display: none; }
+  .stat { padding: 10px; }
+  .stat b { font-size: 16px; }
+  .stat .ic { width: 36px; height: 36px; font-size: 18px; }
+  .top h1 { font-size: 18px; }
+  aside { height: auto; position: static; padding: 10px; }
+  .brand { padding: 0 0 8px; }
+  nav { display: flex; overflow-x: auto; gap: 6px; }
+  nav button { white-space: nowrap; width: auto; margin: 0; }
+  .sys { display: none; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <div class="brand"><div class="crown">🏗️</div><b>CHỦ THẦU TÍ HON</b><small>Game xây nhà tương tác TikTok LIVE</small></div>
+    <nav id="nav">
+      <button data-s="overview" class="on">📊 Tổng quan</button>
+      <button data-s="game">🎮 Điều khiển game</button>
+      <button data-s="tiktok">🔗 Kết nối TikTok</button>
+      <button data-s="gifts">🎁 Quà &amp; hiệu ứng</button>
+      <button data-s="mc">🎙️ Giọng MC &amp; đồ hoạ</button>
+      <button data-s="test">🧪 Chạy thử</button>
+      <button data-s="guide">📘 Hướng dẫn lên live</button>
+    </nav>
+    <div class="sys" id="sys">● Hệ thống đang hoạt động</div>
+  </aside>
+
+  <main>
+    <div class="top"><h1 id="title">Tổng quan hệ thống</h1><span class="pill" id="mcPill">🎙️ MC: Nữ (Hoài My)</span></div>
+
+    <section id="s-overview" class="on">
+      <div class="stats">
+        <div class="stat live" id="stConn"><div class="ic">📡</div><div><small>Kết nối TikTok</small><b id="vConn">Chưa kết nối</b></div></div>
+        <div class="stat"><div class="ic">👀</div><div><small>Người xem</small><b id="vViewers">0</b></div></div>
+        <div class="stat"><div class="ic">❤️</div><div><small>Tổng tim</small><b id="vLikes">0</b></div></div>
+        <div class="stat"><div class="ic">💎</div><div><small>Kim cương quà</small><b id="vDiamonds">0</b></div></div>
+      </div>
+      <div class="card">
+        <h2>🏠 Công trình đang xây <span class="tag run" id="vPhase">—</span></h2>
+        <div class="row" style="justify-content:space-between"><b id="vHouse">—</b><span class="mut" id="vEta"></span></div>
+        <div class="mut" id="vStage" style="margin-top:6px">—</div>
+        <div class="prog"><i id="vProg"></i></div>
+        <div class="segs" id="vSegs"></div>
+        <div class="row" style="margin-top:12px;gap:16px"><span>👷 <b id="vWorkers">0</b> thợ</span><span>⚡ Tốc độ <b id="vSpeed">x1.0</b></span><span>🏘️ Đã xây <b id="vBuilt">0</b> căn</span></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn ok" data-ctl="resume">▶ Tiếp tục</button>
+          <button class="btn" data-ctl="pause">⏸ Tạm dừng</button>
+          <button class="btn" data-ctl="skip">⏭ Bỏ qua giai đoạn</button>
+          <button class="btn pink" data-ctl="reset">🔄 Vòng mới</button>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2>🏆 Top thợ</h2><div class="list" id="vTop"><span class="mut">Chưa có ai</span></div></div>
+        <div class="card"><h2>🧱 Gạch vinh danh (quà)</h2><div class="list" id="vHonor"><span class="mut">Chưa có quà</span></div></div>
+      </div>
+      <div class="card"><h2>📜 Diễn biến</h2><div class="feed" id="vFeed"></div></div>
+    </section>
+
+    <section id="s-game">
+      <div class="card">
+        <h2>🎮 Điều khiển vòng chơi</h2>
+        <div class="row">
+          <button class="btn pri" data-ctl="start">🗳️ Mở bình chọn mẫu mới</button>
+          <button class="btn" data-ctl="skip">⏭ Bỏ qua (giai đoạn / hết giờ bình chọn)</button>
+          <button class="btn" data-ctl="pause">⏸ Tạm dừng</button>
+          <button class="btn ok" data-ctl="resume">▶ Tiếp tục</button>
+          <button class="btn pink" data-ctl="handover">🎉 Bàn giao ngay</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>🏠 Chọn thẳng mẫu nhà (bỏ qua bình chọn)</h2>
+        <div class="row" id="housePick"></div>
+      </div>
+      <div class="card">
+        <h2>🎙️ Cho MC nói một câu</h2>
+        <div class="row"><input id="sayText" placeholder="VD: Cả nhà ơi thả tim cho thợ làm nhanh nào!" style="flex:1" /><button class="btn pri" id="sayBtn">📢 Đọc</button></div>
+      </div>
+    </section>
+
+    <section id="s-tiktok">
+      <div class="card">
+        <h2>🔗 Kết nối phiên LIVE TikTok</h2>
+        <p class="mut">Phải bấm <b>Phát trực tiếp</b> trong TikTok LIVE Studio trước, rồi mới bấm Kết nối. Rớt mạng server sẽ tự nối lại.</p>
+        <label>Username TikTok (không cần @)</label>
+        <input id="ttUser" placeholder="ductranvipp" />
+        <label>Euler Stream API key (không bắt buộc – giúp kết nối ổn định hơn)</label>
+        <input id="ttKey" placeholder="Dán key ở đây nếu có" />
+        <div class="row" style="margin-top:12px"><button class="btn pri" id="ttConnect">🔌 Kết nối</button><button class="btn bad" id="ttDisconnect">✖ Ngắt</button></div>
+        <div class="err" id="ttErr"></div>
+      </div>
+    </section>
+
+    <section id="s-gifts">
+      <div class="card">
+        <h2>🎁 Cấu hình quà → hiệu ứng</h2>
+        <p class="mut" style="margin-bottom:10px">Quà chỉ tạo hiệu ứng + khắc tên lên “Gạch vinh danh”, <b>không</b> làm nhà xây nhanh hơn (đúng quy định TikTok). Tên quà gõ đúng tên tiếng Anh TikTok gửi (VD: Rose, Finger Heart). Dòng <b>*</b> = mọi quà khác.</p>
+        <table><thead><tr><th>Tên quà</th><th>Tên hiển thị</th><th>Hiệu ứng</th><th>Bật</th><th></th></tr></thead><tbody id="giftRows"></tbody></table>
+        <div class="row" style="margin-top:12px"><button class="btn" id="giftAdd">＋ Thêm quà</button><button class="btn pri" id="giftSave">💾 Lưu</button></div>
+      </div>
+    </section>
+
+    <section id="s-mc">
+      <div class="card">
+        <h2>🎙️ Giọng MC (Edge TTS tiếng Việt)</h2>
+        <div class="row">
+          <label class="pill"><input type="radio" name="voice" value="f" style="width:auto" /> Nữ – Hoài My</label>
+          <label class="pill"><input type="radio" name="voice" value="m" style="width:auto" /> Nam – Nam Minh</label>
+          <button class="btn" id="voiceTest">🔊 Nghe thử</button>
+        </div>
+        <div class="row" style="margin-top:12px"><label class="switch"><input type="checkbox" id="mcOn" /><span></span></label><span>Bật giọng đọc MC trên live</span></div>
+      </div>
+      <div class="card">
+        <h2>🖥️ Đồ hoạ &amp; nhịp chơi</h2>
+        <label>Chất lượng 3D</label>
+        <select id="quality"><option value="low">Thấp – máy Intel UHD (khuyên dùng)</option><option value="high">Cao – máy có card rời (đổ bóng, khử răng cưa)</option></select>
+        <div class="grid2">
+          <div><label>Thời gian xây 1 căn (phút)</label><input id="buildMinutes" type="number" min="5" max="60" /></div>
+          <div><label>Thời gian bình chọn (giây)</label><input id="voteSeconds" type="number" min="10" max="120" /></div>
+        </div>
+        <div class="row" style="margin-top:12px"><button class="btn pri" id="mcSave">💾 Lưu cài đặt</button></div>
+      </div>
+    </section>
+
+    <section id="s-test">
+      <div class="card">
+        <h2>🧪 Giả lập người xem (không cần LIVE)</h2>
+        <div class="row" style="margin-bottom:12px"><label class="switch"><input type="checkbox" id="botOn" /><span></span></label><span>Người xem ảo tự tương tác liên tục</span></div>
+        <div class="row">
+          <button class="btn" data-emit="vote">🗳️ Bình chọn ngẫu nhiên</button>
+          <button class="btn" data-emit="chat" data-text="thép">📦 Gõ “thép”</button>
+          <button class="btn" data-emit="chat" data-text="gạch">🧱 Gõ “gạch”</button>
+          <button class="btn" data-emit="chat" data-text="sơn">🎨 Gõ “sơn”</button>
+          <button class="btn" data-emit="like" data-count="50">❤️ 50 tim</button>
+          <button class="btn" data-emit="follow">➕ Follow</button>
+          <button class="btn" data-emit="share">🔗 Chia sẻ</button>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn pink" data-emit="gift" data-gift="Rose" data-dia="1">🌹 Rose</button>
+          <button class="btn pink" data-emit="gift" data-gift="Finger Heart" data-dia="5">🫰 Finger Heart</button>
+          <button class="btn pink" data-emit="gift" data-gift="Doughnut" data-dia="30">🍩 Doughnut (xe bồn)</button>
+          <button class="btn pink" data-emit="gift" data-gift="Perfume" data-dia="20">🎈 Perfume</button>
+          <button class="btn" data-emit="chat" data-repeat="100">💥 100 bình luận cùng lúc</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-guide">
+      <div class="card">
+        <h2>📘 Lên live từ PC (TikTok LIVE Studio hoặc OBS)</h2>
+        <ol style="padding-left:20px;line-height:1.8">
+          <li>Bấm đúp <b>BAT-LIVE.bat</b> → cửa sổ đen hiện “CHỦ THẦU TÍ HON đang chạy” (đừng tắt cửa sổ này).</li>
+          <li>TikTok LIVE Studio: đặt khung <b>dọc</b> → Thêm nguồn <b>Link/Trang web</b> → dán link bên phải, kích thước <b>1080×1920</b> (muốn chữ nét hơn: 1620×2880 rồi thu nhỏ vừa khung).</li>
+          <li>Bật “điều khiển âm thanh qua LIVE Studio/OBS” để giọng MC lên live.</li>
+          <li>Bấm <b>Phát trực tiếp</b> → quay lại đây tab <b>Kết nối TikTok</b> → Kết nối.</li>
+          <li>Mở trang này trên điện thoại (cùng Wi‑Fi): <code id="lanHint">http://IP-máy-tính:3010</code> để điều khiển khi đang live.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <div class="right">
+    <div class="card">
+      <h2>🖥️ Link OBS Live (đưa vào OBS / LIVE Studio)</h2>
+      <div class="obs"><input id="obsLink" readonly /><button class="btn" id="copyLink">📋</button></div>
+    </div>
+    <div class="card">
+      <h2 style="justify-content:space-between">👁️ Xem trước <label class="switch"><input type="checkbox" id="pvOn" /><span></span></label></h2>
+      <div class="preview" id="preview"><div class="off">Bật để xem trước hình 3D.<br />Máy yếu thì để tắt khi đang live cho nhẹ.</div></div>
+    </div>
+    <div class="card feat">
+      <h2>⭐ Tính năng nổi bật</h2>
+      <ul>
+        <li>Nhận bình luận, quà, tim, follow từ TikTok LIVE</li>
+        <li>Bình chọn 4 mẫu nhà bằng bình luận</li>
+        <li>Xây đủ quy trình: giấy phép → móng → cột, dầm, sàn → tường → mái → hoàn thiện → bàn giao</li>
+        <li>Giọng MC tiếng Việt (Hoài My / Nam Minh)</li>
+        <li>Quà = hiệu ứng + gạch vinh danh</li>
+        <li>Khung dọc 1080×1920 sẵn sàng lên live</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script type="module" src="/dashboard.js"></script>
+</body>
+</html>

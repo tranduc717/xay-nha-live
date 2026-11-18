@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chủ Thầu Tí Hon – Stage</title>
+<link rel="stylesheet" href="/stage/stage.css" />
+<script type="importmap">{ "imports": { "three": "/vendor/three/build/three.module.js" } }</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="gl"></canvas>
+  <canvas id="fx" width="1080" height="1920"></canvas>
+
+  <div id="top">
+    <div class="logo">🏗️ CHỦ THẦU TÍ HON</div>
+    <div class="sub"><span id="houseChip">Chọn mẫu nhà</span><span id="roundChip">Căn số 1</span></div>
+  </div>
+
+  <div id="stagebar">
+    <div class="row"><span id="stageNo">GIAI ĐOẠN 1/16</span><span id="eta">Còn ~15:00</span></div>
+    <div id="stageName">Xin giấy phép xây dựng</div>
+    <div class="bar"><i id="stageFill"></i></div>
+    <div id="segs"></div>
+  </div>
+
+  <div id="need" class="card">
+    <h3>📦 GÕ ĐỂ CHỞ VẬT LIỆU</h3>
+    <div id="needList"></div>
+    <div id="boost">⚡ Tốc độ x1.0 · 👷 4 thợ</div>
+  </div>
+
+  <div id="topbox" class="card">
+    <h3>🏆 TOP THỢ</h3>
+    <div id="topList"></div>
+  </div>
+
+  <div id="vote">
+    <div class="vtitle">🗳️ CHỌN MẪU NHÀ SẼ XÂY</div>
+    <div class="vsub">Bình luận <b>1</b>, <b>2</b>, <b>3</b> hoặc <b>4</b> · còn <b id="voteLeft">30</b> giây</div>
+    <div id="voteGrid"></div>
+  </div>
+
+  <div id="permit">
+    <div class="paper">
+      <div class="ph">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+      <div class="ph2">Độc lập – Tự do – Hạnh phúc</div>
+      <div class="pt">GIẤY PHÉP XÂY DỰNG</div>
+      <div class="pl" id="permitHouse">Công trình: ...</div>
+      <div class="pl">Chủ đầu tư: Chủ Thầu Tí Hon</div>
+      <div class="pl">Đơn vị thi công: Cả nhà trên LIVE</div>
+      <div class="stamp" id="stamp">ĐÃ DUYỆT</div>
+    </div>
+  </div>
+
+  <div id="banner"></div>
+  <div id="mc"><b id="mcName">🎙️ MC</b><span id="mcText"></span></div>
+
+  <div id="feed" class="card"></div>
+  <div id="honor" class="card">
+    <h3>🧱 GẠCH VINH DANH</h3>
+    <div id="honorList"><i class="empty">Tặng quà để được khắc tên lên gạch nhà!</i></div>
+  </div>
+
+  <div id="guide">💬 Gõ tên vật liệu · ❤️ Thả tim = tăng tốc · ➕ Follow = thêm thợ · 🎁 Quà = hiệu ứng &amp; khắc tên</div>
+
+  <div id="finale">
+    <div class="ftitle">🎉 BÀN GIAO CÔNG TRÌNH 🎉</div>
+    <div id="fhouse"></div>
+    <div class="fkey">🔑 Chủ nhà</div>
+    <div id="fowner">—</div>
+    <div class="fcred">👷 Đội thợ xuất sắc</div>
+    <div id="fcredits"></div>
+  </div>
+
+  <div id="paused">⏸ TẠM DỪNG</div>
+  <div id="tapSound">🔊 Bấm vào màn hình để bật tiếng</div>
+</div>
+<script type="module" src="/stage/game.js"></script>
+</body>
+</html>
